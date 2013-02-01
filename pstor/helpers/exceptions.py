@@ -1,0 +1,2 @@
+class PstorException(Exception):
+    pass

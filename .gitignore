@@ -5,3 +5,5 @@ build/
 
 .env
 MANIFEST
+
+__test

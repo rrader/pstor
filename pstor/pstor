@@ -1,7 +1,8 @@
 #!/usr/bin/python2
 
 import argparse
-import commands
+from pstor import commands
+from pstor.helpers.exceptions import PstorException
 
 def main():
     #http://stackoverflow.com/questions/9729919/gem-git-style-command-line-arguments-in-python
@@ -11,7 +12,10 @@ def main():
     subparsers.add_parser('status')
     subparsers.add_parser('remote')
     args = parser.parse_args()
-    commands.call_command(args.sub_commands, vars(args))
+    try:
+        commands.call_command(args.sub_commands, vars(args))
+    except PstorException, e:
+        print e.message
 
 if __name__ == '__main__':
     main()

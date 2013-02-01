@@ -1,0 +1,1 @@
+alias xpstor='cd ~/Projects/pstor; [ -z $VIRTUAL_ENV ] && source .env/bin/activate; python setup.py install; cd -; echo "=============================="; echo ; pstor '
