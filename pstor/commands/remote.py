@@ -1,0 +1,2 @@
+def remote(**args):
+	pass

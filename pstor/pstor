@@ -1,3 +1,17 @@
 #!/usr/bin/python2
 
-print 1
+import argparse
+import commands
+
+def main():
+    #http://stackoverflow.com/questions/9729919/gem-git-style-command-line-arguments-in-python
+    parser = argparse.ArgumentParser(description='PStor - Encrypted storage manager')
+    subparsers = parser.add_subparsers(dest='sub_commands')
+    subparsers.add_parser('init')
+    subparsers.add_parser('status')
+    subparsers.add_parser('remote')
+    args = parser.parse_args()
+    commands.call_command(args.sub_commands, vars(args))
+
+if __name__ == '__main__':
+    main()
