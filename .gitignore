@@ -7,3 +7,4 @@ build/
 MANIFEST
 
 __test
+*.egg-info

@@ -5,6 +5,7 @@ setup(name = "pstor",
       description = "Encrypted storage manager",
       author = "Roman Rader",
       author_email = "antigluk@gmail.com",
-      packages=["pstor"],
+      packages=["pstor","pstor.commands","pstor.helpers"],
       scripts=['pstor/pstor'],
+      install_requires=['sh'],
       )

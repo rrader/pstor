@@ -6,9 +6,11 @@ from pstor.helpers.exceptions import PstorException
 
 def main():
     #http://stackoverflow.com/questions/9729919/gem-git-style-command-line-arguments-in-python
+    #http://code.google.com/p/crypt-manager/source/browse/trunk/conceal/conceal.py
     parser = argparse.ArgumentParser(description='PStor - Encrypted storage manager')
     subparsers = parser.add_subparsers(dest='sub_commands')
-    subparsers.add_parser('init')
+    init = subparsers.add_parser('init')
+    init.add_argument('--pass')
     subparsers.add_parser('status')
     subparsers.add_parser('remote')
     args = parser.parse_args()
