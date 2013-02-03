@@ -7,6 +7,6 @@ def cli_command(func):
 def call_command(name, args={}):
     cmd_list[name](**args)
 
-import init, status, remote
+import init, status, remote, destroy
 
 __all__ = cmd_list.keys()
