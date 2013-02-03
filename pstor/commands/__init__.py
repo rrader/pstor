@@ -1,6 +1,12 @@
-from status import status
-from init import init
-from remote import remote
+cmd_list = {}
+
+def cli_command(func):
+    cmd_list[func.__name__] = func
+    return func
 
 def call_command(name, args={}):
-    globals()[name](**args)
+    cmd_list[name](**args)
+
+import init, status, remote
+
+__all__ = cmd_list.keys()

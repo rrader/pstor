@@ -1,6 +1,8 @@
 import os
 from ..helpers import exceptions
+from . import cli_command
 
+@cli_command
 def status(**args):
     if os.path.isdir(".pstor"):
         pass

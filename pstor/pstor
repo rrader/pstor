@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 
 import argparse
-from pstor import commands
+from pstor.commands import cmd_list
 from pstor.helpers.exceptions import PstorException
 
 def main():
@@ -15,7 +15,7 @@ def main():
     subparsers.add_parser('remote')
     args = parser.parse_args()
     try:
-        commands.call_command(args.sub_commands, vars(args))
+        cmd_list[args.sub_commands] (**vars(args))
     except PstorException, e:
         print e.message
 
