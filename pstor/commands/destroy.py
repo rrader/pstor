@@ -2,9 +2,10 @@ import os
 import sh
 import shutil
 from ..helpers import exceptions
-from . import cli_command
+from . import cli_command,inside_pstor
 
 @cli_command
+@inside_pstor
 def destroy(**args):
     if not os.path.isdir(".pstor"):
         raise exceptions.PstorException("No pstor here")

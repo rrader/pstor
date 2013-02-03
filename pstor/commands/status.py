@@ -1,14 +1,14 @@
 import os
-import sh
-from ..helpers import exceptions
-from . import cli_command
+from ..helpers import exceptions, pstor
+from . import cli_command, inside_pstor
 
 @cli_command
+@inside_pstor
 def status(**args):
     if os.path.isdir(".pstor"):
-        cwd = os.path.join(os.getcwd(), 'files')
-        if any(cwd == path.strip() for path in 
-            list(sh.awk(sh.grep(sh.mount(), 'encfs'), "{print $3}"))):
+        if pstor.mounted():
             print "All ok"
+        else:
+            print "Not mounted. use $ pstor up"
     else:
         raise exceptions.PstorException("Not initialized in this directory. Do\n $ pstor init")

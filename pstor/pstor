@@ -15,6 +15,9 @@ def main():
     destroy = subparsers.add_parser('destroy')
     destroy.add_argument('--force', action="store_true", default=False)
     subparsers.add_parser('remote')
+    up = subparsers.add_parser('up')
+    up.add_argument('--pass')
+    subparsers.add_parser('down')
     args = parser.parse_args()
     # print vars(args)
     try:
