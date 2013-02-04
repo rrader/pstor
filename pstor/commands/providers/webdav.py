@@ -41,7 +41,7 @@ class WebDAV(object):
         if not os.path.exists(remote_dir):
             os.mkdir(remote_dir)
 
-        tries = 3
+        tries = 5
         while tries > 0:
             self.mount(remote_dir)
             sleep(1)
