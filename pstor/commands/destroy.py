@@ -1,7 +1,7 @@
 import os
-import sh
 import shutil
-from ..helpers import exceptions
+
+from ..helpers import exceptions,pstor
 from . import cli_command,inside_pstor
 
 def args(subparsers):
@@ -16,6 +16,6 @@ def destroy(**args):
     else:
         if not args['force']:
             raise exceptions.PstorException("Add --force to confirm")
-        sh.fusermount('-u', 'files')
+        pstor.umount('files')
         shutil.rmtree('.pstor')
         shutil.rmtree('files')

@@ -5,6 +5,7 @@ import ConfigParser
 from time import sleep
 
 from . import Provider
+from ...helpers import exceptions, pstor
 
 class WebDAV(object):
     __metaclass__ = Provider
@@ -28,27 +29,53 @@ class WebDAV(object):
     def name(cls):
         return cls.__name__
 
+    def mount(self, remote_dir):
+        if pstor.mounted(remote_dir):
+            return
+
+        sh.wdfs(self.url, remote_dir,
+            o="username={},password={}".format(self.username, self.password))
+
     def up(self):
         remote_dir = self.remote_dir
         if not os.path.exists(remote_dir):
             os.mkdir(remote_dir)
 
-        sh.wdfs(self.url, remote_dir,
-            o="username={},password={}".format(self.username, self.password))
-        sleep(1)
+        tries = 3
+        while tries > 0:
+            self.mount(remote_dir)
+            sleep(1)
+
+            try:
+                sh.ls(remote_dir)
+            except sh.ErrorReturnCode:
+                pstor.umount(remote_dir)
+            else:
+                break
+
+            tries -= 1
+        else:
+            raise exceptions.PstorException("Can't ls in mounted webdav directory")
 
         remote_dir = os.path.join(self.remote_dir, 'pstor/')
-        sh.rsync(remote_dir, '.pstor/encrypted', recursive=True, delete=True)
+        #TODO: check if mounted correctly
+        if not os.path.exists(remote_dir):
+            os.mkdir(remote_dir)
+        sh.rsync(remote_dir, '.pstor/encrypted', recursive=True)
 
     def down(self):
         try:
-            sh.fusermount('-u', self.remote_dir)
+            pstor.umount(self.remote_dir)
         except sh.ErrorReturnCode:
             pass
 
     def sync(self):
+        if not pstor.mounted(self.remote_dir):
+            print "<Not mounted>"
+            return
+
         remote_dir = os.path.join(self.remote_dir, 'pstor')
         if not os.path.exists(remote_dir):
             os.mkdir(remote_dir)
-
+        #TODO: do sync only if mounted
         sh.rsync('.pstor/encrypted/', remote_dir, recursive=True, delete=True)
