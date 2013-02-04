@@ -15,6 +15,7 @@ Creating storage
     $ pstor remote --add master https://webdav.yandex.ru yandex_login yandex_password
     WebDAV remote 'master' for https://webdav.yandex.ru added
 
+
 Loading existing storage
 ----------------------
 

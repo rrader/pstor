@@ -58,9 +58,10 @@ class WebDAV(object):
             raise exceptions.PstorException("Can't ls in mounted webdav directory")
 
         remote_dir = os.path.join(self.remote_dir, 'pstor/')
-        #TODO: check if mounted correctly
+
         if not os.path.exists(remote_dir):
             os.mkdir(remote_dir)
+        #TODO: Check if not rewrites files (e.g. existing repo in new repo)
         sh.rsync(remote_dir, '.pstor/encrypted', recursive=True)
 
     def down(self):
@@ -77,5 +78,5 @@ class WebDAV(object):
         remote_dir = os.path.join(self.remote_dir, 'pstor')
         if not os.path.exists(remote_dir):
             os.mkdir(remote_dir)
-        #TODO: do sync only if mounted
+
         sh.rsync('.pstor/encrypted/', remote_dir, recursive=True, delete=True)
