@@ -1,3 +1,5 @@
+import ConfigParser
+
 from ...helpers import import_all
 
 providers = []
@@ -20,3 +22,8 @@ def get_provider_by_name(name):
         if provider.name() == name:
             return provider
     return None
+
+def get_remote_by_name(name):
+    config = ConfigParser.ConfigParser()
+    config.read('.pstor/remotes/'+name)
+    return get_provider_by_name(config.get('remote', 'provider')) (name)

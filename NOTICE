@@ -7,3 +7,7 @@ Contributors: see AUTHORS file
 
 
 Encription possibility of files provided by EncFS (http://www.arg0.net/encfs).
+
+WebDAV remote uses wdfs (http://noedler.de/projekte/wdfs/)
+
+rsync is used for files synchronization
