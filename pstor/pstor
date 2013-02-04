@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 
 import argparse
-from pstor.commands import cmd_list
+from pstor.commands import cmd_list, cmd_args_list
 from pstor.helpers.exceptions import PstorException
 
 def main():
@@ -9,15 +9,8 @@ def main():
     #http://code.google.com/p/crypt-manager/source/browse/trunk/conceal/conceal.py
     parser = argparse.ArgumentParser(description='PStor - Encrypted storage manager')
     subparsers = parser.add_subparsers(dest='sub_commands')
-    init = subparsers.add_parser('init')
-    init.add_argument('--pass')
-    subparsers.add_parser('status')
-    destroy = subparsers.add_parser('destroy')
-    destroy.add_argument('--force', action="store_true", default=False)
-    subparsers.add_parser('remote')
-    up = subparsers.add_parser('up')
-    up.add_argument('--pass')
-    subparsers.add_parser('down')
+    [func(subparsers) for func in cmd_args_list]
+
     args = parser.parse_args()
     # print vars(args)
     try:

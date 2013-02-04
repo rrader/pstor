@@ -3,7 +3,11 @@ import sh
 from ..helpers import exceptions, pstor
 from . import cli_command,inside_pstor
 
-@cli_command
+def args(subparsers):
+    up = subparsers.add_parser('up')
+    up.add_argument('--pass')
+
+@cli_command(args=args)
 @inside_pstor
 def up(**args):
     if pstor.mounted():

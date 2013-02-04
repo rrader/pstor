@@ -1,9 +1,14 @@
 import os
 import sh
+
 from ..helpers import exceptions
 from . import cli_command
 
-@cli_command
+def args(subparsers):
+    init = subparsers.add_parser('init')
+    init.add_argument('--pass')
+
+@cli_command(args=args)
 def init(**args):
     if os.path.isdir(".pstor"):
         raise exceptions.PstorException("Already initialized.")

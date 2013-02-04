@@ -4,7 +4,11 @@ import shutil
 from ..helpers import exceptions
 from . import cli_command,inside_pstor
 
-@cli_command
+def args(subparsers):
+    destroy = subparsers.add_parser('destroy')
+    destroy.add_argument('--force', action="store_true", default=False)
+
+@cli_command(args=args)
 @inside_pstor
 def destroy(**args):
     if not os.path.isdir(".pstor"):

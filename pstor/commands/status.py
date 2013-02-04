@@ -2,13 +2,13 @@ import os
 from ..helpers import exceptions, pstor
 from . import cli_command, inside_pstor
 
-@cli_command
+def args(subparsers):
+    subparsers.add_parser('status')
+
+@cli_command(args=args)
 @inside_pstor
 def status(**args):
-    if os.path.isdir(".pstor"):
-        if pstor.mounted():
-            print "All ok"
-        else:
-            print "Not mounted. use $ pstor up"
+    if pstor.mounted():
+        print "All ok"
     else:
-        raise exceptions.PstorException("Not initialized in this directory. Do\n $ pstor init")
+        print "Not mounted. use $ pstor up"
