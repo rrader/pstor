@@ -1,6 +1,7 @@
 import os
 import sh
 import sys
+import getpass
 
 from ..helpers import exceptions, pstor
 from . import cli_command,inside_pstor
@@ -16,8 +17,9 @@ def up(**args):
     if pstor.mounted():
         raise exceptions.PstorException("Already up")
 
-    if not args['pass']:
-            raise exceptions.PstorException("Choose password with --pass='passwd'")
+    password = args['pass']
+    if not password:
+        password = getpass.getpass()
 
     for remote in os.listdir('.pstor/remotes'):
         remote = get_remote_by_name(remote)
@@ -31,5 +33,5 @@ def up(**args):
     sys.stdout.flush()
     sh.encfs(os.path.join(cwd,'.pstor/encrypted'),
              os.path.join(cwd,'files'),
-             extpass="echo '%s'" % args['pass'])
+             extpass="echo '%s'" % password)
     print "UP"

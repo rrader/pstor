@@ -1,6 +1,7 @@
 import os
 import sh
 from time import sleep
+import getpass
 
 from ..helpers import exceptions
 from . import cli_command
@@ -15,8 +16,10 @@ def init(**args):
     if os.path.isdir(".pstor"):
         raise exceptions.PstorException("Already initialized.")
     else:
-        if not args['pass'] and not args['exists']:
-            raise exceptions.PstorException("Choose password with --pass='passwd'")
+        password = args['pass']
+        if not password and not args['exists']:
+            password = getpass.getpass()
+
         os.mkdir(".pstor")
         os.mkdir(".pstor/remotes")
         os.mkdir(".pstor/encrypted")
@@ -26,7 +29,7 @@ def init(**args):
         if not args['exists']:
             sh.encfs(os.path.join(cwd,'.pstor/encrypted'),
                      os.path.join(cwd,'files'),
-                     paranoia=True, extpass="echo '%s'" % args['pass'])
+                     paranoia=True, extpass="echo '%s'" % password)
             sleep(1)
             sh.fusermount('-u', 'files')
 
