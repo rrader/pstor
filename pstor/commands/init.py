@@ -8,13 +8,14 @@ from . import cli_command
 def args(subparsers):
     init = subparsers.add_parser('init')
     init.add_argument('--pass')
+    init.add_argument('--exists', action="store_true", default=False)
 
 @cli_command(args=args)
 def init(**args):
     if os.path.isdir(".pstor"):
         raise exceptions.PstorException("Already initialized.")
     else:
-        if not args['pass']:
+        if not args['pass'] and not args['exists']:
             raise exceptions.PstorException("Choose password with --pass='passwd'")
         os.mkdir(".pstor")
         os.mkdir(".pstor/remotes")
@@ -22,11 +23,12 @@ def init(**args):
         os.mkdir("files")
 
         cwd = os.getcwd()
-        sh.encfs(os.path.join(cwd,'.pstor/encrypted'),
-                 os.path.join(cwd,'files'),
-                 paranoia=True, extpass="echo '%s'" % args['pass'])
-        sleep(1)
-        sh.fusermount('-u', 'files')
+        if not args['exists']:
+            sh.encfs(os.path.join(cwd,'.pstor/encrypted'),
+                     os.path.join(cwd,'files'),
+                     paranoia=True, extpass="echo '%s'" % args['pass'])
+            sleep(1)
+            sh.fusermount('-u', 'files')
 
         # sh.cp(sh.glob(os.path.join(cwd,'.pstor/data/*')), cwd, symbolic_link=True, recursive=True)
 
