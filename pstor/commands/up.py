@@ -19,6 +19,13 @@ def up(**args):
     if not args['pass']:
             raise exceptions.PstorException("Choose password with --pass='passwd'")
 
+    for remote in os.listdir('.pstor/remotes'):
+        remote = get_remote_by_name(remote)
+        print remote.name() + "... ",
+        sys.stdout.flush()
+        remote.up()
+        print "UP"
+
     cwd = os.getcwd()
     print "EncFS... ",
     sys.stdout.flush()
@@ -26,10 +33,3 @@ def up(**args):
              os.path.join(cwd,'files'),
              extpass="echo '%s'" % args['pass'])
     print "UP"
-
-    for remote in os.listdir('.pstor/remotes'):
-        remote = get_remote_by_name(remote)
-        print remote.name() + "... ",
-        sys.stdout.flush()
-        remote.up()
-        print "UP"
