@@ -37,8 +37,8 @@ class WebDAV(object):
             o="username={},password={}".format(self.username, self.password))
         sleep(1)
 
-        remote_dir = os.path.join(self.remote_dir, 'pstor')
-        sh.rsync(remote_dir, '.pstor/encrypted/', recursive=True, delete=True)
+        remote_dir = os.path.join(self.remote_dir, 'pstor/')
+        sh.rsync(remote_dir, '.pstor/encrypted', recursive=True, delete=True)
 
     def down(self):
         try:

@@ -15,4 +15,4 @@ def sync(**args):
         print remote.name() + "... ",
         sys.stdout.flush()
         remote.sync()
-        print "DOWN"
+        print "SYNC"

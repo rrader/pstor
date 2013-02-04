@@ -5,20 +5,18 @@ import sh
 from ..helpers import exceptions, pstor
 from . import cli_command,inside_pstor
 from .providers import get_remote_by_name
+from . import sync
 
 def args(subparsers):
-    subparsers.add_parser('down')
+    down = subparsers.add_parser('down')
+    down.add_argument('--force', action="store_true", default=False)
 
 @cli_command(args=args)
 @inside_pstor
 def down(**args):
-    if not pstor.mounted():
-        raise exceptions.PstorException("Already down")
-
-    print "EncFS... ",
-    sys.stdout.flush()
-    sh.fusermount('-u', 'files')
-    print "DOWN"
+    if not args['force']:
+        print "Sync before down..."
+        sync.sync(**args)
 
     for remote in os.listdir('.pstor/remotes'):
         remote = get_remote_by_name(remote)
@@ -26,3 +24,11 @@ def down(**args):
         sys.stdout.flush()
         remote.down()
         print "DOWN"
+
+    if not pstor.mounted():
+        raise exceptions.PstorException("Already down")
+
+    print "EncFS... ",
+    sys.stdout.flush()
+    sh.fusermount('-u', 'files')
+    print "DOWN"
