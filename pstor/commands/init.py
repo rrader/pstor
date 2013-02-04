@@ -24,7 +24,8 @@ def init(**args):
         sh.encfs(os.path.join(cwd,'.pstor/encrypted'),
                  os.path.join(cwd,'files'),
                  paranoia=True, extpass="echo '%s'" % args['pass'])
+        sh.fusermount('-u', 'files')
 
         # sh.cp(sh.glob(os.path.join(cwd,'.pstor/data/*')), cwd, symbolic_link=True, recursive=True)
 
-        print "Now you can add remote for this pstore with\n $ pstor remote add"
+        print "Now you can add remote for this pstore with\n $ pstor remote --add"
