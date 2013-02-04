@@ -2,7 +2,7 @@ import os
 import sys
 import sh
 
-from ..helpers import exceptions, pstor
+from ..helpers import pstor
 from . import cli_command,inside_pstor
 from .providers import get_remote_by_name
 from . import sync
@@ -26,9 +26,9 @@ def down(**args):
         print "DOWN"
 
     if not pstor.mounted():
-        raise exceptions.PstorException("Already down")
+        print "Already down"
 
     print "EncFS... ",
     sys.stdout.flush()
-    sh.fusermount('-u', 'files')
+    pstor.umount('files')
     print "DOWN"

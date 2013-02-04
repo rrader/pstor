@@ -1,8 +1,9 @@
 import os
 import shutil
 
-from ..helpers import exceptions,pstor
+from ..helpers import exceptions
 from . import cli_command,inside_pstor
+from . import down
 
 def args(subparsers):
     destroy = subparsers.add_parser('destroy')
@@ -16,6 +17,7 @@ def destroy(**args):
     else:
         if not args['force']:
             raise exceptions.PstorException("Add --force to confirm")
-        pstor.umount('files')
+        down.down(force=True)
         shutil.rmtree('.pstor')
         shutil.rmtree('files')
+        print "DEMOLISHED"
