@@ -2,6 +2,7 @@ import urlparse
 import os
 import sh
 import ConfigParser
+from time import sleep
 
 from . import Provider
 
@@ -34,6 +35,10 @@ class WebDAV(object):
 
         sh.wdfs(self.url, remote_dir,
             o="username={},password={}".format(self.username, self.password))
+        sleep(1)
+
+        remote_dir = os.path.join(self.remote_dir, 'pstor')
+        sh.rsync(remote_dir, '.pstor/encrypted/', recursive=True, delete=True)
 
     def down(self):
         try:

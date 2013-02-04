@@ -1,5 +1,6 @@
 import os
 import sh
+from time import sleep
 
 from ..helpers import exceptions
 from . import cli_command
@@ -24,6 +25,7 @@ def init(**args):
         sh.encfs(os.path.join(cwd,'.pstor/encrypted'),
                  os.path.join(cwd,'files'),
                  paranoia=True, extpass="echo '%s'" % args['pass'])
+        sleep(1)
         sh.fusermount('-u', 'files')
 
         # sh.cp(sh.glob(os.path.join(cwd,'.pstor/data/*')), cwd, symbolic_link=True, recursive=True)
